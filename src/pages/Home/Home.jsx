@@ -26,7 +26,7 @@ const Home = () => {
     [handleViewportChange]
   );
   return (
-    <div style={{ height: "100vh", color: 'whitesmoke', fontSize: '25'}}>
+    <div style={{ height: "100vh", color: 'whitesmoke', fontSize: '2'}}>
       <MapGL
         ref={mapRef}
         {...viewport}

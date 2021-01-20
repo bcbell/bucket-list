@@ -16,6 +16,7 @@ const photoSchema = new Schema ({
 
 const itemSchema = new Schema ({
     addedBy: [{ type: Schema.Types.ObjectId, ref: "User" }], 
+    completed: {type: Boolean, default: false},
     avatar: String,
     dateTime: Date, 
     location: String, 

@@ -21,6 +21,7 @@ const tripsRouter = require('./routes/trips')
 const itemsRouter = require('./routes/items')
 const apiRouter = require('./routes/api')
 const chatRouter = require('./routes/chat');
+const discussionRouter = require('./routes/discussionBoard')
 
 const cors = require('cors')
 
@@ -39,7 +40,12 @@ app.use('/api/users', userRouter);
 app.use('/trips', tripsRouter);
 app.use('/trips', itemsRouter);
 app.use('/pickles', apiRouter);
+<<<<<<< HEAD
 app.use('/messenger', chatRouter);
+=======
+app.use('/discussion/:name', discussionRouter)
+
+>>>>>>> 635ec020388c7e159ea6a8b6832677f96cb35fc7
 
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));

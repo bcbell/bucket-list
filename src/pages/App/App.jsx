@@ -18,6 +18,9 @@ import FooterButtons from '../../components/Buttons/FooterButtons/FooterButtons'
 import Favorite from '../../pages/Favorites/Favorite'
 import Messenger from '../../pages/SocketMessenger/Messenger'
 
+import VanillaAddTrip from '../VanillaAddTrip/VanillaAddTrip'
+import VanillaTripList from '../VanillaTripList/VanillaTripList'
+import POIDetails from '../POIDetails/POIDetails'
 
 class App extends Component {
   state = {
@@ -120,6 +123,30 @@ class App extends Component {
             />  
             <Route exact path='/messenger'
             render={()=><Messenger  user={this.state.user} chatMessages={this.state.chat}/>}
+            />
+
+           <Route 
+             exact path='/vanilla'
+             render={() => 
+              authService.getUser() ?
+              <VanillaAddTrip 
+                user={this.state.user}  
+              />
+              : 
+              <Redirect to='/login'/>
+            }
+          />
+            <Route 
+              exact path='/vanillatrips'
+              render={() => 
+                <VanillaTripList
+                  user={this.state.user}
+                />
+              }
+            />
+            <Route 
+            exact path = '/search/:id'
+            render={({match}) => <POIDetails match={match}/>}
             />
 
       </>

@@ -12,8 +12,6 @@ class POISearch extends Component {
 
      handlePOISearch = async (formData) => {
          const POI = await getPOIfromBackend(formData)
-         console.log('right here')
-        //  console.log(POI)
          this.setState({POI: POI.results})
     }
 
@@ -25,7 +23,7 @@ class POISearch extends Component {
             {this.state.POI.length ? 
               <>
                 {this.state.POI.map((POI) => (
-                  <POICard key={POI.id} POI={POI.poi.name} />
+                  <POICard key={POI.id} POI={POI.name} snippet={POI.snippet} id={POI.id}/>
                 ))}
               </>
              : (
