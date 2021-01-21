@@ -21,7 +21,10 @@ function TripShowCard({ user, trip, handleDeleteTrip}) {
     <Card.Text className="mb-2 text-muted"> Departing from: {trip.departing}</Card.Text>
     <Card.Text className="mb-2 text-muted"> Arriving in: {trip.arriving}</Card.Text>
     <Card.Link href="/vanillatrips" type="submit" onClick={() => handleDeleteTrip(trip._id)}>Delete Trip</Card.Link>
-    <Card.Link href="#">Edit Trip</Card.Link>
+    <Link to={{ 
+      pathname: '/edittrip',
+      state: {trip}
+    }}  >Edit Trip</Link>
     <Card.Link href="#">Add to Itinerary</Card.Link>
     <Card.Link href="#">View Itinerary</Card.Link>
   </Card.Body>

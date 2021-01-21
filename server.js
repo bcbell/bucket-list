@@ -7,9 +7,35 @@ const dotenv = require('dotenv')
 const fileUpload = require('express-fileupload');
 
 const http = require('http').Server(app);
-const io = require('./io');
-io.attach(http);
+// const io = require('./io');
+// io.attach(http);
 
+
+const io = require('socket.io')({
+  cors:{
+      origin:'*'
+  }
+})
+
+
+const newMessageEvent = "newChatMessage";
+
+io.on("connection", (socket) => {
+  
+  // Join a conversation
+  const { roomId } = socket.handshake.query;
+  socket.join(roomId);
+
+  // Listen for new messages
+  socket.on(newMessageEvent, (data) => {
+    io.in(roomId).emit(newMessageEvent, data);
+  });
+
+  // Leave the room if the user closes the socket
+  socket.on("disconnect", () => {
+    socket.leave(room);
+  });
+});
 
 
 require('dotenv').config();
@@ -22,6 +48,8 @@ const itemsRouter = require('./routes/items')
 const apiRouter = require('./routes/api')
 const chatRouter = require('./routes/chat');
 const discussionRouter = require('./routes/discussionBoard')
+const messageBoardRouter = require('./routes/messageBoard')
+const profileRouter =require('./routes/profile')
 
 const cors = require('cors')
 
@@ -42,6 +70,8 @@ app.use('/trips', itemsRouter);
 app.use('/pickles', apiRouter);
 app.use('/messenger', chatRouter);
 app.use('/discussion/:name', discussionRouter)
+app.use('/messageBoard', messageBoardRouter)
+app.use('/api/profile', profileRouter)
 
 
 app.get('/*', function(req, res) {

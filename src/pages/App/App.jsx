@@ -7,7 +7,9 @@ import authService from "../../services/authService";
 import Users from '../Users/Users'
 import "./App.css";
 import Home from '../Home/Home'
-import Profile from "../Profile/Profile"
+import EditProfile from "../Profile/EditProfile"
+// import CardProfile from '../../components/CardProfile/CardProfile'
+import Profile from '../Profile/Profile'
 import ViewTrips from '../Trips/ViewTrips/ViewTrips'
 import AddTrips from '../Trips/AddTrips/AddTrips'
 import Messages from '../Messages/Messages'
@@ -17,10 +19,14 @@ import Destinations from '../Messages/Destinations/Destinations'
 import FooterButtons from '../../components/Buttons/FooterButtons/FooterButtons'
 import Favorite from '../../pages/Favorites/Favorite'
 import Messenger from '../../pages/SocketMessenger/Messenger'
-
+import JoinChat from '../../pages/SocketMessenger/JoinChat'
 import VanillaAddTrip from '../VanillaAddTrip/VanillaAddTrip'
 import VanillaTripList from '../VanillaTripList/VanillaTripList'
 import POIDetails from '../POIDetails/POIDetails'
+import VanillaEditTrip from "../VanillaEditTrip/VanillaEditTrip";
+import MessageBoard from '../MessageBoard/MessageBoard'
+import profileApi, * as profileService from '../../services/profile-api'
+import userAPI,  * as userService from '../../services/userService.js'
 
 class App extends Component {
   state = {
@@ -37,6 +43,21 @@ class App extends Component {
   handleSignupOrLogin = () => {
     this.setState({ user: authService.getUser() });
   };
+
+  // handleUpdateUser = async formData =>{
+  //   const user = await userService.update(formData)
+  //   this.setState(state =>({
+  //     user: user,
+  //   }), ()=> this.props.history.push('/profile'))
+  // }
+ handleCreateUserInfo= async formData=>{
+   const user= await userAPI.edit(formData)
+   this.setState(state=>({
+     user: user, 
+   }), ()=>this.props.history.push('profile'))
+  }
+   
+
 
   render() {
     const { user } = this.state
@@ -79,12 +100,17 @@ class App extends Component {
           }
         />
        <Route 
-          exact path='/profile'
-          render={() => 
-            <Profile
-              user={this.state.user} />
+          exact path='/profile/edit'
+          render={({history, location}) => 
+            <EditProfile
+              user={this.state.user} history={history} handleCreateUserInfo={this.handleCreateUserInfo} location={location}/>
               }
             /> 
+            <Route exact path='/profile'
+            render={(match)=><Profile user={this.state.user}  match={match}/>
+            }/>
+            <Route exact path='/users/:user' render={({match})=> <Profile   match={match}/> }/>
+  
             <Route 
           exact path='/addtrip'
           render={() => 
@@ -121,8 +147,10 @@ class App extends Component {
             />  
             <Route exact path='/favorites' render={()=><Favorite user={this.state.user}/>}
             />  
-            <Route exact path='/messenger'
-            render={()=><Messenger  user={this.state.user} chatMessages={this.state.chat}/>}
+            <Route exact path='/messenger/:roomName'
+            render={({match})=><Messenger component={Messenger} match={match} user={this.state.user}/>}
+            />
+            <Route exact path='/messenger' render={()=><JoinChat component={JoinChat} user={this.state.user}/>}
             />
 
            <Route 
@@ -145,10 +173,19 @@ class App extends Component {
               }
             />
             <Route 
+             exact path='/edittrip'
+             render={() => 
+              <VanillaEditTrip />
+            }
+            />
+            <Route 
             exact path = '/search/:id'
             render={({match}) => <POIDetails match={match}/>}
             />
-
+            <Route 
+            exact path='/messageBoard'
+            render={()=> <MessageBoard user={this.state.user}/>}
+            />
       </>
     );
   }

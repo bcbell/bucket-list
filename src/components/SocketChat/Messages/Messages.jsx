@@ -14,12 +14,13 @@ const Message = ({messages, name}) => {
   }
   return (
   <>
-
+ 
    <h2>Conversation: {name.name} & {!name.name} </h2>
    {/* {names.map((time, message)=>( */}
     <div>
-      <h1>{name.body}{name.time}</h1>
-
+  
+      <h1>{messages}{messages}</h1>
+  
     </div>
     
    {/* ))}   */}

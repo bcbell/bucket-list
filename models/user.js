@@ -7,10 +7,11 @@ const userSchema = new mongoose.Schema({
   name: String,
   email: {type: String, required: true, lowercase: true, unique: true},
   password: String, 
-  avatar: String, 
-  bio: String, 
+  avatar: String,
   friends: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
-  trips: [{type: mongoose.Schema.Types.ObjectId, ref: "Trip"}]
+  trips: [{type: mongoose.Schema.Types.ObjectId, ref: "Trip"}],
+  chat: [{type:mongoose.Schema.Types.ObjectId, ref: "Chat"}],
+  profile: [{type:mongoose.Schema.Types.ObjectId, ref: "Profile"}]
 
 }, {
   timestamps: true

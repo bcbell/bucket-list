@@ -24,3 +24,12 @@ export function deleteTrip(id) {
     .then(res => res.json())
     
 }
+
+export function update(trip) {
+    return fetch(`/trips/${trip._id}`, {
+        method: "PUT",
+        headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
+        body: JSON.stringify(trip)
+    }, {mode: "cors"})
+    .then(res => res.json());
+}

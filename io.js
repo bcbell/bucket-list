@@ -1,50 +1,31 @@
 const io = require('socket.io')({
-    cors:{
-        origin:'*'
-    }
+  cors:{
+      origin:'*'
+  }
 })
-const messages = []
-let userCount = 0
 
+const PORT = 3001;
+const newMessageEvent = "newChatMessage";
 
-io.on('connect', (socket) => {
-    userCount ++
-    console.log(`Socket Id: ${socket.id}`);
-    messages.push({user: "System", message: `${userCount} users are connected`})
-    io.sockets.emit('new-message', {messages})
-    socket.on('join', ({ name, room }, callback) => {
-      const { error, user } = addUser({ id: socket.id, name, room });
+io.on("connection", (socket) => {
   
-      if(error) return callback(error);
-  
-      socket.join(user.room);
-  
-      socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
-      socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
-  
-      io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
-  
-      callback();
-    });
-  
-    socket.on('sendMessage', (message, callback) => {
-      const user = getUser(socket.id);
-  
-      io.to(user.room).emit('message', { user: user.name, text: message });
-  
-      callback();
-    });
-  
-    socket.on('disconnect', () => {
-      const user = removeUser(socket.id);
-  
-      if(user) {
-        io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
-        io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
-      }
-    })
+  // Join a conversation
+  const { roomId } = socket.handshake.query;
+  socket.join(roomId);
+
+  // Listen for new messages
+  socket.on(newMessageEvent, (data) => {
+    io.in(roomId).emit(newMessageEvent, data);
   });
 
+  // Leave the room if the user closes the socket
+  socket.on("disconnect", () => {
+    socket.leave(room);
+  });
+});
+
+server.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
+
 module.exports = io
-  
- 
