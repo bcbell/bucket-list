@@ -1,6 +1,12 @@
-# react-jwt-template
+# Bucket List (trip planning made easy!)
+[You can check out the app here!](https://bucketlist-pbs.herokuapp.com/)
 
-This is a template for a full-stack MERN application with built in user authentication utilizing JWT.# mern-jwt-template
+![wireframe](Screen%20Shot%202021-01-21%20at%202.24.07%20PM.png)
+![wireframe](Screen%20Shot%202021-01-21%20at%202.27.58%20PM.png)
+![wireframe](Screen%20Shot%202021-01-21%20at%202.28.11%20PM.png)
+![wireframe](Screen%20Shot%202021-01-21%20at%202.29.18%20PM.png)
+![wireframe](Screen%20Shot%202021-01-21%20at%202.29.36%20PM.png)
+![wireframe](Screen%20Shot%202021-01-21%20at%202.29.59%20PM.png)
 
 
 __Pages__
@@ -27,8 +33,17 @@ __Pages__
    (
        
    )
+## Ice Box Features
+- Connect to an API in order to actually book travel.
+- Overlay Points of Interest onto the map.
+- Incorporate a country counter, to keep track of where you have been.
+- Incorportate Socket.IO in order to have a real-time chat with other users.
+- Add the ability to invite friends to join your trip, and plan collaboratively.
+- Add friends, and be able to see pictures your friends have posted.
 
 
+## Technologies Used 
+MongoDB, Express, React, Node
 @material-ui/icons
 @material-ui/core
 Tinder Cards

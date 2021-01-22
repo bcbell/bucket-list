@@ -35,14 +35,18 @@ export function edit(id){
   }
 
  
-export function create(id) {
+export function create(formData) {
   return fetch(`${BASE_URL}`, {
         method: "POST",
-        headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
-        body: JSON.stringify(id)
-  }, {mode: "cors"})
-  .then(res => res.json());
-}
+        headers: {
+          "content-type": "application/json",
+          Authorization: "Bearer " + tokenService.getToken(),
+        },
+        body: JSON.stringify(formData),
+      },
+      { mode: "cors" }
+    ).then((res) => res.json());
+    }
 
   export function getFavorites(){
     return fetch(`${BASE_URL}/`, {
@@ -51,9 +55,19 @@ export function create(id) {
   .then(res => res.json())
   }
 
+  export function update(formData, userId) {
+    return fetch(`${BASE_URL}`, {
+        method: "PUT",
+        headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
+        body: JSON.stringify(formData)
+    }, {mode: "cors"})
+    .then(res => res.json());
+  }
+
 export default{
   show,
   edit,
+  update,
   create,
   getUser,
   getFavorites

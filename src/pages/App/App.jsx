@@ -25,8 +25,9 @@ import VanillaTripList from '../VanillaTripList/VanillaTripList'
 import POIDetails from '../POIDetails/POIDetails'
 import VanillaEditTrip from "../VanillaEditTrip/VanillaEditTrip";
 import MessageBoard from '../MessageBoard/MessageBoard'
-import profileApi, * as profileService from '../../services/profile-api'
-import userAPI,  * as userService from '../../services/userService.js'
+import * as profileAPI from '../../services/profile-api'
+import   * as userService from '../../services/userService.js'
+import MessageDetails from '../MessageDetails/MessageDetails'
 
 class App extends Component {
   state = {
@@ -41,7 +42,7 @@ class App extends Component {
   };
 
   handleSignupOrLogin = () => {
-    this.setState({ user: authService.getUser() });
+    this.setState({ user: authService.create() });
   };
 
   // handleUpdateUser = async formData =>{
@@ -51,30 +52,27 @@ class App extends Component {
   //   }), ()=> this.props.history.push('/profile'))
   // }
  handleCreateUserInfo= async formData=>{
-   const user= await userAPI.edit(formData)
-   this.setState(state=>({
-     user: user, 
-   }), ()=>this.props.history.push('profile'))
+   const profile= await profileAPI.update(this.state.user._id, formData)
+   this.setState(profile)
   }
-   
-
+  
+  // handleCreateUserInfo= async formData=>{
+  //   const user= await profileService.create(this.state.user._id, formData)
+  //   this.setState(user)
+  //  }
 
   render() {
     const { user } = this.state
     
     return (
       <>
-        <NavBar user={this.state.user} handleLogout={this.handleLogout}/>
-        <FooterButtons/>
+        <NavBar user={this.state.user} handleLogout={this.handleLogout} />
+        <FooterButtons />
+        <Route exact path='/' render={() => <Home />} />
+
         <Route
           exact
-          path="/"
-          render={() => (<Home />)}
-        />
-        
-        <Route
-          exact
-          path="/signup"
+          path='/signup'
           render={({ history }) => (
             <Signup
               history={history}
@@ -84,7 +82,7 @@ class App extends Component {
         />
         <Route
           exact
-          path="/login"
+          path='/login'
           render={({ history }) => (
             <Login
               history={history}
@@ -94,9 +92,66 @@ class App extends Component {
         />
         <Route
           exact
-          path="/users"
+          path='/users'
+          render={() => (user ? <Users /> : <Redirect to='/login' />)}
+        />
+        <Route
+          exact
+          path='/profile'
+          render={() => <Profile user={this.state.user} />}
+        />
+        <Route
+          exact
+          path='/addtrip'
+          render={() => <AddTrips user={this.state.user} />}
+        />
+        <Route
+          exact
+          path='/trips'
+          render={() => <ViewTrips user={this.state.user} />}
+        />
+        <Route
+          exact
+          path='/discussion'
+          render={() => <Messages user={this.state.user} />}
+        />
+        <Route exact path='/search' render={() => <POISearch />} />
+        <Route
+          exact
+          path='/discussion/:name'
+          render={({ match }) => (
+            <DiscussionPost match={match} user={this.state.user} />
+          )}
+        />
+        <Route
+          exact
+          path='/destinations'
+          render={({ match }) => (
+            <Destinations match={match} user={this.state.user} />
+          )}
+        />
+        <Route
+          exact
+          path='/destinations/:name'
+          render={({ match }) => (
+            <DiscussionPost match={match} user={this.state.user} />
+          )}
+        />
+        <Route
+          exact
+          path='/favorites'
+          render={() => <Favorite user={this.state.user} />}
+        />
+
+        <Route
+          exact
+          path='/vanilla'
           render={() =>
-            user ? <Users /> : <Redirect to="/login" />
+            authService.getUser() ? (
+              <VanillaAddTrip user={this.state.user} />
+            ) : (
+              <Redirect to='/login' />
+            )
           }
         />
        <Route 
@@ -107,7 +162,7 @@ class App extends Component {
               }
             /> 
             <Route exact path='/profile'
-            render={(match)=><Profile user={this.state.user}  match={match}/>
+            render={({match, location})=><Profile location={location} handleCreateUerInfo={this.handleCreateUserInfo} user={this.state.user}  match={match}/>
             }/>
             <Route exact path='/users/:user' render={({match})=> <Profile   match={match}/> }/>
   
@@ -186,6 +241,31 @@ class App extends Component {
             exact path='/messageBoard'
             render={()=> <MessageBoard user={this.state.user}/>}
             />
+        <Route
+          exact
+          path='/vanillatrips'
+          render={() => <VanillaTripList user={this.state.user} />}
+        />
+        <Route exact path='/edittrip' render={() => <VanillaEditTrip />} />
+        <Route
+          exact
+          path='/search/:id'
+          render={({ match }) => <POIDetails match={match} />}
+        />
+        <Route
+          exact
+          path='/messageBoard'
+          render={({ history }) => (
+            <MessageBoard history={history} user={this.state.user} />
+          )}
+        />
+        <Route
+          exact
+          path='/messageBoard/:id'
+          render={({ history, match }) => (
+            <MessageDetails history={history} match={match} user={this.state.user} />
+          )}
+        />
       </>
     );
   }

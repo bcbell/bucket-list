@@ -12,31 +12,45 @@ export function getAllUsers() {
 }
 
 export function getUser(){
-  return fetch(`${BASE_URL}updateprofile`, {
-    headers: {'Authorization': 'Bearer ' + tokenService.getToken()},
-}, {mode: "cors"})
-.then(res => res.json())
+  return fetch(`${BASE_URL}`, {
+    // method: 'GET',
+    headers: {
+      "content-type": "application/json",
+      'Authorization': 'Bearer ' + tokenService.getToken()
+    },
+  },
+  { mode: "cors" }).then(res => res.json());
 }
 
-  export function show (id){
+
+export function update( id, newUserData){
+    return fetch(`${BASE_URL}/${id}`, {
+        method: "PUT",
+        headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
+        body: JSON.stringify(newUserData)
+    }, {mode: "cors"})
+    .then(res => res.json());
+  }
+
+  export function edit(id, newUserData){
+    return fetch (`${BASE_URL}/${id}update`,{
+      headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
+      body: JSON.stringify(newUserData)
+  }, {mode: "cors"})
+  .then(res => res.json());
+}
+   
+
+
+   export function show (id){
     return fetch(`${BASE_URL}/${id}`, {
         method: "GET",
         headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
     }, {mode: "cors"})
-    .then(res => res.json());
+    .then((res) => res.json());
   }
-export function edit(id){
-    return fetch(`${BASE_URL}/${id}/update`, {
-        method: "GET",
-        headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
-        body: JSON.stringify()
-    }, {mode: "cors"})
-    .then(res => res.json());
-  }
-
- 
-export function create(id) {
-  return fetch(`${BASE_URL}`, {
+export function create(id, newUserData) {
+  return fetch(`/${BASE_URL}`, {
         method: "POST",
         headers: {'content-type': 'application/json', 'Authorization': 'Bearer ' + tokenService.getToken()},
         body: JSON.stringify()
@@ -45,7 +59,7 @@ export function create(id) {
 }
 
   export function getFavorites(usersId){
-    return fetch(`${BASE_URL}commenter/${usersId}`, {
+    return fetch(`${BASE_URL}favorites/${usersId}`, {
       headers: {'Authorization': 'Bearer ' + tokenService.getToken()},
   }, {mode: "cors"})
   .then(res => res.json())
@@ -53,6 +67,7 @@ export function create(id) {
 
 export default{
   show,
+  update,
   edit,
   create,
   getUser,

@@ -8,6 +8,12 @@ const userSchema = new mongoose.Schema({
   email: {type: String, required: true, lowercase: true, unique: true},
   password: String, 
   avatar: String,
+  avatar: String, 
+  bio: String, 
+  status: {type: String, enum:['Dreaming of a Vacation ', 'Business Trip', 'Weekend Trip', 'Weekend Getaway', 'Honeymoon or Romantic Vacation', 'Family Trip' ]
+  },
+  dream: String,
+  favorite: String,
   friends: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
   trips: [{type: mongoose.Schema.Types.ObjectId, ref: "Trip"}],
   chat: [{type:mongoose.Schema.Types.ObjectId, ref: "Chat"}],

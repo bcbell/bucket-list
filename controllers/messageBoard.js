@@ -1,4 +1,4 @@
-const MessageBoard = require("../models/messageBoard");
+const MessageBoard = require("../models/MessageBoard");
 
 module.exports = {
   index,
@@ -20,7 +20,7 @@ function index(req, res) {
 }
 
 function create(req, res) {
-  //   req.body.postedBy = req.user.name;
+    // req.body.postedBy = req.formData.user;
   //   req.body.avatar = req.user.avatar;
   MessageBoard.create(req.body)
     .then((message) => res.json(message))
@@ -43,6 +43,7 @@ function reply(req, res) {
   MessageBoard.findById(req.params.id).then((message) => {
     // req.body.postedBy = req.user.name;
     // req.body.avatar = req.user.avatar;
+    console.log(req.body)
     message.replies.push(req.body);
     message
       .save()

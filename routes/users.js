@@ -8,10 +8,10 @@ const usersCtrl = require('../controllers/users');
 /*---------- Protected Routes ----------*/
 router.use(require("../config/auth"));
 router.get("/",  usersCtrl.index);
-router.put('/:id/', usersCtrl.update)
+router.put('/:id', usersCtrl.update)
 router.get('/:id', usersCtrl.edit)
 router.get('/:id', usersCtrl.show)
-router.post('/',  usersCtrl.create)
+
 
 /*---------- Auth Checker ----------*/
 function checkAuth(req, res, next) {

@@ -26,7 +26,7 @@ const UserImgUpload =({
 
 const Name =({
   onChange,
-  value
+  name
 })=>
   <div className="field">
     <label className= 'cardProfile' htmlFor="name">
@@ -37,14 +37,14 @@ const Name =({
       type="text"
       onChange={onChange}
       maxlength="20"
-      value={value}
+      value={name}
       required/>
   </div>
 
 
 const Bio =({
   onChange,
-  value
+  bio
 })=>
 <div className="field">
 <label className= 'cardProfile' htmlFor="bio">
@@ -55,19 +55,19 @@ const Bio =({
   type="text"
   onChange={onChange}
   maxlength="500"
-  value={value}
+  value={bio}
   required/>
 </div>
 
 const Status =({
   onChange,
-  value
+  status
 })=>
   <div className="field">
     <label className='cardProfile' htmlFor="status">
       current status:
     </label>
-    <select onChange={onChange}  value={value} >
+    <select onChange={onChange}  value={status} >
       <option>Dreaming of a vacation</option>
       <option>Business Trip</option>
       <option>Weekend Getaway</option>
@@ -85,7 +85,7 @@ const Status =({
   </div>
 const Dream =({
   onChange,
-  value
+  dream
 })=>
   <div className="field">
     <label className='cardProfile' htmlFor="dream">
@@ -96,14 +96,14 @@ const Dream =({
       type="text" 
       onChange={onChange} 
       maxLength="35" 
-      value={value} 
+      value={dream} 
       placeholder="Bora Bora!" 
       />
   </div>
 
 const Favorite =({
   onChange,
-  value
+  favorite
 })=>
   <div className="field">
     <label className='cardProfile' htmlFor="dream">
@@ -114,7 +114,7 @@ const Favorite =({
       type="text" 
       onChange={onChange} 
       maxLength="35" 
-      value={value} 
+      value={favorite} 
       placeholder="Africa!" 
       />
   </div>
@@ -129,7 +129,7 @@ const Profile =({
   favorite
 })=>
   <div className="profilePic">
-    <form className='cardProfile' ref={this.formRef} onSubmit={onSubmit} >
+    <form className='cardProfile' onSubmit={onSubmit} >
       <label className="custom-file-upload fas">
         <div className="img-wrap" >
           <img className='userProfile' for="photo-upload" src={src}/>
@@ -141,7 +141,7 @@ const Profile =({
         <div className='bio'>{bio}</div>
         <div className='status'>{dream}</div>
         <div className='favorite'>{favorite}</div>
-      <button disabled={this.state.invalidForm} type="submit" className="edit">Edit Profile </button>
+      <button type="submit" className="edit"> Edit Profile </button>
       <Link to ={{pathname:'/profile'}} ><button>Cancel</button></Link>
       </div>
     </form>
@@ -170,8 +170,8 @@ class CardProfile extends Component {
     status: '',
     dream: '',
     favorite: '',
-    active: 'edit',
-    invalidForm: false,
+    // active: 'edit',
+    // invalidForm: false,
    
     
   }
@@ -192,7 +192,7 @@ class CardProfile extends Component {
   }
   editName = e =>{
     const name = e.target.value;
-    const formData={...this.state.formData, [e.target.name]:e.target.value}
+    const formData={...this.state.formData, [e.target.name]:e.target.name}
     this.setState({
       formData: formData,
       name,
@@ -201,7 +201,7 @@ class CardProfile extends Component {
 
   editBio = e => {
     const bio = e.target.value;
-    const formData={...this.state.formData, [e.target.name]:e.target.value}
+    const formData={...this.state.formData, [e.target.name]:e.target.bio}
     this.setState({
       formData: formData,
       bio,
@@ -209,7 +209,7 @@ class CardProfile extends Component {
   }
   editStatus = e => {
     const status = e.target.value;
-    const formData={...this.state.formData, [e.target.name]:e.target.value}
+    const formData={...this.state.formData, [e.target.name]:e.target.status}
     this.setState({
       formData: formData,
       status,
@@ -217,7 +217,7 @@ class CardProfile extends Component {
   }
   editDream = e => {
     const dream = e.target.value;
-    const formData={...this.state.formData, [e.target.name]:e.target.value}
+    const formData={...this.state.formData, [e.target.dream]:e.target.dream}
     this.setState({
       formData: formData,
       dream,
@@ -227,7 +227,7 @@ class CardProfile extends Component {
 
   editFavorite = e => {
     const favorite = e.target.value;
-    const formData={...this.state.formData, [e.target.name]:e.target.value}
+    const formData={...this.state.formData, [e.target.favorite]:e.target.favorite}
     this.setState({
       formData: formData,
       favorite,
@@ -243,9 +243,10 @@ class CardProfile extends Component {
            dream,
            status,
            favorite,
-           active} = this.state;
-           
+           } = this.state;
+          //  active
            const handleSubmit= e =>{
+             e.preventDefault()
     this.props.handleCreateUserInfo(this.state.formData)
   
     // let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
@@ -259,29 +260,29 @@ class CardProfile extends Component {
       <div>
 
 
-        {(active === 'edit')?(
+        {/* {(active === 'edit')?(  */}
           <Edit onSubmit={handleSubmit}>
             <UserImgUpload onChange={this.photoUpload} src={imageUrl}/>
-            <Name onChange={this.editName} value={name}/>
+            <Name onChange={this.editName} name={name} value={name}/>
             <Status onChange={this.editStatus} value={status}/>
             <Bio onChange={this.editBio} value={bio}/>
             <Dream onChange={this.editDream} value={dream}/>
             <Favorite onChange={this.favorite} value={favorite}/>
           </Edit>
-        ):(
-          <Profile
-          onSubmit={handleSubmit}
-            src={imageUrl}
-            name={name}
-            status={status}
-            dream={dream}
-            favorite={favorite}
-            bio={bio}/>)}
+        {/* // ):(
+        //   <Profile */}
+        {/* //   onSubmit={handleSubmit}
+        //     src={imageUrl}
+        //     name={name}
+        //     status={status}
+        //     dream={dream}
+        //     favorite={favorite}
+        //     bio={bio}/>) */}
       </div>
     )
   }
+// }
 }
-
 
 
 

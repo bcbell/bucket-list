@@ -7,11 +7,13 @@ const profileCtrl = require('../controllers/profile');
 
 /*---------- Protected Routes ----------*/
 router.use(require("../config/auth"));
-router.get("/",  profileCtrl.index);
-router.put('/:id/', profileCtrl.update)
-router.get('/:id', profileCtrl.edit)
-router.get('/:id', profileCtrl.show)
-router.post('/',  profileCtrl.create)
+router.get("api/profile/",  profileCtrl.index);
+router.put('api/profile/:id', profileCtrl.update)
+router.get('api/profile/:id/edit', profileCtrl.edit)
+
+
+router.get('api/profile/:id', profileCtrl.show)
+router.post('api/profile/',  profileCtrl.create)
 /*---------- Auth Checker ----------*/
 function checkAuth(req, res, next) {
   if (req.user) return next();

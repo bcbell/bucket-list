@@ -1,5 +1,5 @@
 const Item = require("../models/item");
-const Trip = require("../models/trip");
+const Trip = require("../models/Trip");
 
 module.exports = {
   create,
